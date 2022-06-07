@@ -1,0 +1,38 @@
+This pipeline is to redo the results for the comparison of the pre and peri RSN
+
+A. determine and compare RSN
+script based
+1. MEG-PAC.m
+2. megPAC_all.m
+3. Rearranging_megPAC_MEG.m
+
+by hand
+4. Project Result from (3) on template brain in Brainstorm
+5. Spatial smooth the result from (4) with 7mm in Brainstorm
+
+Script based
+6. RSpipeline_MEG_all_subjects.m for each condition
+7. RSpipline_MEG_JackKnife.m for each condition
+8. Take the RSN you find in all conditions in (6) and create a template set for each condition
+
+by hand
+9. select_RSN_based_on_Condition.m --> will find the matching RSN in each condition
+
+script based
+10. Jack_Knife_Statistic_based_on_PD_t_test.m --> run the test between conditions
+11. prepare_RSN_JackKnife_statistics_for_correction
+12. Create_images_of_cortical_RSN.m --> create images of the templates
+13. create_template_Images_RSN_paper.m --> create the figure for the publication
+14. Create_files_of_RSN_JK_statistics_both_template.m --> will create a summary file for the statistic results.
+15. Create_images_of_cortical_RSN_JK_statistics.m --> ceate images of the statistics results
+16. create_Statistic_Images_RSN_paper.m --> create the figure for the publication
+17. Overlap_RSN_PD_HC.m --> calculate the overlap between the HC and PD jackknife RSN based on phi-correlation
+
+B. Determine and compare PAC values/frequencies for each vertex and subject
+script based
+18. PAC_significance_MEG.m
+19. PAC_MEG_group_analysis.m
+20. project on template brain in brainstorm
+21. Anova_PAC_frequencies_step1.m
+22. Anova_PAC_frequencies_step2.m
+23. Compare_RSN_UPDRS.m
