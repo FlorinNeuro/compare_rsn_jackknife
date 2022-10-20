@@ -1,7 +1,7 @@
 % This script will calculate the overlap based on the phi correlation
 % between the JK RSN and the HC RSN. It will further test for differences
 % between the condition and test for correlation to the UPDRS value
-% This scipt is used to create Fig 5.
+% This scipt is used to create Fig 5
 % Matthias Sure
 clear
 subjects = {'S001','S002','S003'; ... %peri_OFF
@@ -16,17 +16,18 @@ Template_of_Interest = [4 5 9 10];
 threshold = 0.4;
 % name the networks
 Networks = {'Visual','Front_Occ','DMN','Motor'};
+Network_names = {'Visual','Fronto-Occipital','Frontal','Sensory-Motor'};
 % select the networks from file to create Theta_0 for the JackKnife
 %HC data
-HC_file = ['...\RSN_data\all_Subjects_RSN_HC_None\results_posandnegSignalModes_all_Subjects_None_HC.mat']; 
+HC_file = ['...\RSN_data\all_Subjects_RSN_HC_None\results_posandnegSignalModes_all_Subjects_None_HC.mat';
 load(HC_file,'ImageGridAmp');
 Template = ImageGridAmp(:,Template_of_Interest);
 Template(Template < threshold) = 0;
 Template(Template ~= 0 & ~isnan(Template)) = 1; % the 1/0 matrix will only be used for the sorting
 % identify which files should be loaded and testet against each other
-template_set = 'Temp'; %% use a name to identify your Template selection
+template_set = 'Cond'; %% use a name to identify your Template selection
 Conditions = {'peri_OFF','peri_ON','pre_OFF','pre_ON'};
-JackKnife_data = 'E:\brainstorm_db\PAC_Single_Subject_JK\data\Group_analysis\';
+JackKnife_data = '...\brainstorm_db\database\data\Group_analysis\';
 %define the Standard normal distribution
 %%% --- Diese Formel habe ich von https://en.wikipedia.org/wiki/Normal_distribution
 Phifun = @(z) (1/sqrt(2*pi))*exp(-(z.^2)/2);
@@ -43,15 +44,15 @@ for iNetworks = 1 : size(Template_of_Interest,2)
         iSubj = 0;
         for iJK = 1 : size(JackKnife_Network,2)-1
             iSubj = iSubj + 1;
-            if strcmp(subjects{iCond,iSubj},'NaN')
-                iSubj = iSubj + 1;
-            end
+%             if strcmp(subjects{iCond,iSubj},'NaN')
+%                 iSubj = iSubj + 1;
+%             end
             Overlap(iSubj,iCond,iNetworks) = phi_correl(JackKnife_Network(:,iJK),Template(:,iNetworks));
         end
     end
 end
-%% plot the Phi coefficients over JK runs --> Fig 5
-f = figure('Renderer', 'painters', 'Position', [10 10 1000 800])
+%% plot the Phi coefficents
+f = figure('Renderer', 'painters', 'Position', [10 10 1000 800]);
 subplot(2,2,1);
 hold on
 plot(Overlap(:,1,4),'*-','LineWidth',1.5,'Color','#F5793A')
@@ -114,7 +115,7 @@ exportgraphics(f,['...\Fig_5_Phi_coefficients.pdf'],'Resolution',500)
 %%
 Overlap_mean = nanmean(Overlap);
 Overlap_std = nanstd(Overlap);
-%% t-test between OVerlap
+%% t-test between Phi coefficients
 for iNetworks = 1 : size(Template_of_Interest,2)
     for iCond1 = 1 : size(Conditions,2)
         for iCond2 = 1 : size(Conditions,2)
@@ -123,7 +124,7 @@ for iNetworks = 1 : size(Template_of_Interest,2)
         end
     end
 end
-p_Overlap = p_Overlap*4*4;% Factors for Bonferroni Correction 
+p_Overlap = p_Overlap*4*4; 
 %% load the UPDRS values
 for iCond = 1 : size(Conditions,2)
     temp = load(['V:\UPDRS_data\UPDRS_' Conditions{iCond}]);
@@ -134,7 +135,7 @@ for iCond = 1 : size(Conditions,2)
     end
     clear temp
 end
-%% Korrelation
+%% Korrelation between Phi coefficients and UPDRS scores
 UPDRS_scores = {'UPDRS','non_Tremor','Tremor','Akinesia_Rigidity'};
 for iUPDRS_score = 1 : size(UPDRS_scores,2)
     temp_UPDRS = [];

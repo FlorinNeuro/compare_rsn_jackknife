@@ -39,7 +39,7 @@ test_cond = {'pre_OFF_vs_pre_ON','peri_OFF_vs_peri_ON','peri_OFF_vs_pre_OFF','pe
 for iTime = 1 : size(Template_of_Interest,2)
     for iCond = 1 : size(test_cond,2)
         %define the Output path
-        Output_path = ['...ßOutput\RSN_Results\Images\' Networks{iTime} '\'];
+        Output_path = ['...Output\RSN_Results\Images\' Networks{iTime} '\'];
         for iSide = 1 : size(side,2)
             %% create the single Images
             % Start a new report
@@ -163,7 +163,7 @@ for iTime = 1 : size(Template_of_Interest,2)
                 A_temp(width_I, length_I,:) = [255;255;255];                       
             end
         end
-        cd('C:\Users\M Sure\sciebo\RSN_Results\Images\Names')
+        cd('...\Names') % Folder were images of the Network names are stored
         A_name = imread([test_cond{iCond} '.png']);
         Offset = round((size(A_temp,2)-size(A_name,2))/2);
         add_height = 85;

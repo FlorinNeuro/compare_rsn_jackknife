@@ -1,5 +1,4 @@
-%% This script is to combine the views of RSN calculated across all subjects
-% of one condition selected for the paper --> creates Fig1
+%% This script is used to create Figures 1 of the manuscript.
 % Matthias Sure
 Condition = 'HC_None';
 side = {'left','right','top','bottom','front','back','left_intern','right_intern'};
@@ -11,13 +10,13 @@ Networks = {'Visual','Front_Occ','DMN','Motor'};
 final_side = {'top','bottom','front','back','left','right','left_intern','right_intern'};
 Network_Names = {'Visual_text','Fronto_Occipital_text','Frontal_text','Motor_text'};
 
-Output_path = 'Output\RSN_Results\Images\Template';
+Output_path = '...\Output';
 %% combine images version 1:
 A_final = [];
 %% Motor
 iRSN = 4;
 cd(Output_path)
-image_name = ['Fig_Template_' Condition '_' Networks{iRSN}];
+image_name = ['Template_' Condition '_' Networks{iRSN}];
 A_top = imread([image_name '_' final_side{1} '.png']);
 A_top = A_top(:,100:300,:);
 add_space = uint8(255*ones(size(A_top,1),25,3));
@@ -27,8 +26,8 @@ A_left_int = A_left_int(:,75:325,:);
 A_right_int = imread([image_name '_' final_side{8} '.png']);
 A_right_int = A_right_int(:,75:325,:); 
 A_temp = cat(2,A_top,cat(2,A_left_int,A_right_int));
-cd('C:\Users\M Sure\sciebo\RSN_Results\Images\Names')
-A_name = imread([Network_Names{iRSN} '.png']);
+cd('...\Names')% Folder were images of the Network names are stored
+A_name = imread(['Sensory_' Network_Names{iRSN} '.png']);
 Offset = round((size(A_temp,2)-size(A_name,2))/2);
 add_height = 85;
 add_name = uint8(255*ones(add_height,size(A_temp,2),3));
@@ -42,7 +41,7 @@ A_final = A_temp;
 %% Visual
 iRSN = 1;
 cd(Output_path)
-image_name = ['Fig_Template_' Condition '_' Networks{iRSN}];
+image_name = ['Template_' Condition '_' Networks{iRSN}];
 A_back = imread([image_name '_' final_side{4} '.png']);
 A_back = A_back(:,100:300,:); 
 add_space = uint8(255*ones(size(A_back,1),25,3));
@@ -52,7 +51,7 @@ A_left = A_left(:,75:325,:);
 A_right = imread([image_name '_' final_side{6} '.png']);
 A_right = A_right(:,75:325,:); 
 A_temp = cat(2,A_back,cat(2,A_left,A_right));
-cd('C:\Users\M Sure\sciebo\RSN_Results\Images\Names')
+cd('...\Names')% Folder were images of the Network names are stored
 A_name = imread([Network_Names{iRSN} '.png']);
 Offset = round((size(A_temp,2)-size(A_name,2))/2);
 add_height = 85;
@@ -71,7 +70,7 @@ A_final = cat(1,A_final,A_temp);
 %% Fron_Occ
 iRSN = 2;
 cd(Output_path)
-image_name = ['Fig_Template_' Condition '_' Networks{iRSN}];
+image_name = ['Template_' Condition '_' Networks{iRSN}];
 A_top = imread([image_name '_' final_side{1} '.png']);
 A_top = A_top(:,100:300,:);
 add_space = uint8(255*ones(size(A_top,1),25,3));
@@ -85,7 +84,7 @@ A_back = A_back(:,100:300,:);
 add_space = uint8(255*ones(size(A_back,1),25,3));
 A_back = cat(2,add_space,cat(2,A_back,add_space));
 A_temp = cat(2,A_top,cat(2,A_front,A_back));
-cd('C:\Users\M Sure\sciebo\RSN_Results\Images\Names')
+cd('...\Names')% Folder were images of the Network names are stored
 A_name = imread([Network_Names{iRSN} '.png']);
 Offset = round((size(A_temp,2)-size(A_name,2))/2);
 add_height = 85;
@@ -99,7 +98,7 @@ A_final = cat(1,A_final,A_temp);
 %% Front
 iRSN = 3;
 cd(Output_path)
-image_name = ['Fig_Template_' Condition '_' Networks{iRSN}];
+image_name = ['Template_' Condition '_' Networks{iRSN}];
 A_top = imread([image_name '_' final_side{1} '.png']);
 A_top = A_top(:,100:300,:);
 add_space = uint8(255*ones(size(A_top,1),25,3));
@@ -113,7 +112,7 @@ A_front = A_front(:,100:300,:);
 add_space = uint8(255*ones(size(A_front,1),25,3));
 A_front = cat(2,add_space,cat(2,A_front,add_space));
 A_temp = cat(2,A_top,cat(2,A_bottom,A_front));
-cd('C:\Users\M Sure\sciebo\RSN_Results\Images\Names')
+cd('...\Names')% Folder were images of the Network names are stored
 A_name = imread([Network_Names{iRSN} '.png']);
 Offset = round((size(A_temp,2)-size(A_name,2))/2);
 add_height = 85;
@@ -124,6 +123,16 @@ cd(Output_path)
 imwrite(A_temp,sprintf([image_name '_paper.png'])); 
 A_final = cat(1,A_final,A_temp);
 
+legend = imread('Template_color_bar_4.png');% load the legend
+add_height_1 = floor((size(A_final,1)-size(legend,1))/2);
+add_height_1 = uint8(255*ones(add_height_1,size(legend,2),3));
+add_height_2 = ceil((size(A_final,1)-size(legend,1))/2);
+add_height_2 = uint8(255*ones(add_height_2,size(legend,2),3));
+A_final = cat(2,A_final,cat(1,add_height_1,cat(1,legend,add_height_2)));
 cd(Output_path)
 imwrite(A_final,sprintf(['Overview_RSN_' Condition '_paper.png']));
-
+image(A_final);                
+axis image               % resolution based on image
+axis off                 % avoid printing axis 
+set(gca,'LooseInset',get(gca,'TightInset')); % removing extra white space in figure
+exportgraphics(gca,['Overview_RSN_' Condition '_paper_new.pdf'],'Resolution',500)

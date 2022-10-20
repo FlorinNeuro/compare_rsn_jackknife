@@ -34,7 +34,7 @@ gui_brainstorm('SetCurrentProtocol', iProtocol);
 path1 = '...\brainstorm_db\database\data\Group_analysis\All_subjects_RSN';
 
 %define the Output path
-Output_path = '...\Output\Images\Template\';
+Output_path = '...\Output\';
 
 cd(path1)
 a = dir;

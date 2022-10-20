@@ -24,7 +24,7 @@ script based
 12. Create_images_of_cortical_RSN.m --> create images of the templates
 13. create_template_Images_RSN_paper.m --> create the figure for the publication
 14. Create_files_of_RSN_JK_statistics_both_template.m --> will create a summary file for the statistic results.
-15. Create_images_of_cortical_RSN_JK_statistics.m --> ceate images of the statistics results
+15. Create_images_of_cortical_RSN_JK_statistics.m --> create images of the statistics results
 16. create_Statistic_Images_RSN_paper.m --> create the figure for the publication
 17. Overlap_RSN_PD_HC.m --> calculate the overlap between the HC and PD jackknife RSN based on phi-correlation
 
